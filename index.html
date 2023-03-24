@@ -328,7 +328,7 @@
 						<td style="background-color: ' + (d3.interpolateRdYlBu((feature.properties['Sejm_2019_dm1']+100)/200))  + ';"></td>\
                     </tr>\
 					<tr>\
-						<td style="font-weight: bold; border-width:1px; border-style: solid;"><img src="legend/KO.png" alt ="KO"  class="Logo2"/> </td>\
+						<td style="font-weight: bold; border-width:1px; border-style: solid;"><img src="legend/KO.PNG" alt ="KO"  class="Logo2"/> </td>\
                         <td>' +(lengthToBlank(feature.properties['PnQ_W2']))+(feature.properties['Sejm_2019_m2'] !== null ? numberWithSpaces(feature.properties['PnQ_W2']):'')+'<br>'+(lengthToBlank2(feature.properties['Sejm_2019_p2']))+'(<span class = "td_down" >'+  (feature.properties['Sejm_2019_p2'] !== null ? Autolinker.link(String(feature.properties['Sejm_2019_p2'].toFixed(2))) : '') + '%</span>)</td>\
 						<td style="font-weight: bold;">' + (feature.properties['Sejm_2019_m2'] !== null ? Autolinker.link(String(feature.properties['Sejm_2019_m2'])) : '') + '</td>\
 						<td>\
@@ -493,7 +493,7 @@
 						<th colspan = "'+(feature.properties['Sejm_2019_p8'] > 0 ? '6':'5')+'" style="border-width:1px; border-style: solid; height: auto; font-size: 10px;">Komitet oddający/odbierający minimalną potrzebną liczbę głosów<br>komitetowi, który dzięki temu zdobywa/traci mandat</th>\
 					<tr>\
 						<th style="border-width:1px; border-style: solid;"><img src="legend/PiS.png" alt ="PiS"  class="Logo2"/></th>\
-						<th style="border-width:1px; border-style: solid;"><img src="legend/KO.png" alt ="KO"  class="Logo2"/></th>\
+						<th style="border-width:1px; border-style: solid;"><img src="legend/KO.PNG" alt ="KO"  class="Logo2"/></th>\
 						<th style="border-width:1px; border-style: solid;"><img src="legend/Lewica.jpg" alt ="Lewica"  class="Logo2"/></th>\
 						<th style="border-width:1px; border-style: solid;"><img src="legend/PSL.png" alt ="PSL"  class="Logo2"/></th>\
 						<th style="border-width:1px; border-style: solid;"><img src="legend/Konfederacja.jpg" alt ="Konfederacja"  class="Logo2"/></th>'+(feature.properties['Sejm_2019_p8'] > 0 ? '<th style="border-width:1px; border-style: solid;"><img src="legend/MN.jpg" alt ="Mniejszość Niemiecka"  class="Logo2"/></th>':'')+
@@ -505,7 +505,7 @@
                         '+fillRow(feature, layer, 1)+'\
                     </tr>\
 					<tr>\
-						<td class = "rowLogo"><img src="legend/KO.png" alt ="KO"  class="Logo2"/> </td>\
+						<td class = "rowLogo"><img src="legend/KO.PNG" alt ="KO"  class="Logo2"/> </td>\
 						\
                         '+fillRow(feature, layer, 2)+'\
                     </tr>\
@@ -1001,7 +1001,7 @@
 		var baseMaps = {
 			/*'<img src="legend/Granicewojewdztw_2.png" /> Granice województw': Wojewod,*/
 			'<img src="legend/PiS.png" alt ="PiS"  class="Logo"/> KOMITET WYBORCZY PRAWO I SPRAWIEDLIWOŚĆ': layer_Okregi_0,
-			'<img src="legend/KO.png" alt="KO"   class="Logo"/> KOALICYJNY KOMITET WYBORCZY KOALICJA OBYWATELSKA PO .N IPL ZIELONI': layer_Okregi_KO,
+			'<img src="legend/KO.PNG" alt="KO"   class="Logo"/> KOALICYJNY KOMITET WYBORCZY KOALICJA OBYWATELSKA PO .N IPL ZIELONI': layer_Okregi_KO,
 			'<img src="legend/Lewica.jpg" alt="Lewica"   class="Logo"/> KOMITET WYBORCZY SOJUSZ LEWICY DEMOKRATYCZNEJ': layer_Okregi_Lewica,
 			'<img src="legend/PSL.png" alt="PSL"   class="Logo"/> KOMITET WYBORCZY POLSKIE STRONNICTWO LUDOWE': layer_Okregi_PSL,
 			'<img src="legend/Konfederacja.jpg" alt="Konfederacja"   class="Logo"/> KOMITET WYBORCZY KONFEDERACJA WOLNOŚĆ I NIEPODLEGŁOŚĆ': layer_Okregi_Konfederacja
@@ -1059,7 +1059,7 @@
 						<td class="Last_tdn">41</td>\
 					</tr>\
 					<tr>\
-						<td><img src="legend/KO.png" alt ="KO"  class="Logo"/></td>\
+						<td><img src="legend/KO.PNG" alt ="KO"  class="Logo"/></td>\
 						<td class = "kName">KOALICYJNY KOMITET WYBORCZY KOALICJA OBYWATELSKA PO .N IPL ZIELONI</td>\
 						<td class="Last_td">'+lengthToBlank3(5060355)+numberWithSpaces(5060355) +'<br>' +(lengthToBlank2(27.40))+'('+'<span class = "td_down" >'+Autolinker.link(String(KO_proc.toFixed(2)))+'%</span>)</td>\
 						<td class="Last_tdn">134</td>\
@@ -1241,7 +1241,7 @@
 				$('.leaflet-bottom:eq( 0 )').html('<img class="leaflet-control" src="./images/1.png" style="width: 200px; opacity: 0.9; margin-bottom: -32px;">');
 				/*this.removeControl(populationChangeLegend);
 				populationLegend.addTo(this);*/
-			} else if (eventLayer.name === '<img src="legend/KO.png" alt="KO"   class="Logo"/> KOALICYJNY KOMITET WYBORCZY KOALICJA OBYWATELSKA PO .N IPL ZIELONI') {
+			} else if (eventLayer.name === '<img src="legend/KO.PNG" alt="KO"   class="Logo"/> KOALICYJNY KOMITET WYBORCZY KOALICJA OBYWATELSKA PO .N IPL ZIELONI') {
 				$('.leaflet-bottom:eq( 0 )').html('<img class="leaflet-control" src="./images/2.png" style="width: 200px; opacity: 0.9; margin-bottom: 0px;">');
 			} else if (eventLayer.name === '<img src="legend/Lewica.jpg" alt="Lewica"   class="Logo"/> KOMITET WYBORCZY SOJUSZ LEWICY DEMOKRATYCZNEJ') {
 				$('.leaflet-bottom:eq( 0 )').html('<img class="leaflet-control" src="./images/3.png" style="width: 200px; opacity: 0.9; margin-bottom: 12px;">');
