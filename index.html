@@ -708,6 +708,7 @@
 		//map.addLayer(layer_Okregi_0);
 		//map.addLayer(basemap0);
 		
+		console.log(layer_Okregi_0);
 		map.createPane('pane_Okregi_KO');
 		map.createPane('label21');
         map.getPane('pane_Okregi_KO').style.zIndex = 400;
@@ -1153,11 +1154,20 @@
 		// Add this one (only) for now, as the Population layer is on by default
 		populationLegend.addTo(map);
 
-		 /*var searchControl = new L.Control.Search({
+		 var searchControl = new L.Control.Search({
 			layer: layer_Okregi_0,
-			propertyName: 'index',
+			propertyName: 'Kandydaci',
 			marker: false,
-			textPlaceholder: 'Wpisz nazwisko kandydata...',
+			collapsed: true,
+			initial: false,
+			textPlaceholder: 'Wpisz nazwisko osoby kandydującej...',
+			buildTip: function(text, val) {
+					  var p = val.layer.feature.properties;
+					  var tip = p.Kandydaci;
+					  var vip = p.jpt_kod_je;
+					  //return '<a href="#" class=""><div style="float:left; width: 176px;"><span style=" font-size: 12px;">'+ tip +'</span>, <span style=" font-size: 11px;"><i>' +(vip.substring(6,7)!=="1"?'gmina':'miasto')+ '</i></span></div><div style="float:left; font-size: 9px; padding-left: 4px;">' + json_Powiaty_Simplified_1.getFeaturesByProperty('JPT_KOD_JE', val.layer.feature.properties['JPT_KOD_JE'].substring(0,4))[0].properties.JPT_NAZWA_+'<br>Okręg wyborczy nr  ' +  json_Okr.getFeaturesByProperty('Okr', val.layer.feature.properties['Okr'])[0].properties.Okr + '</div><div style="clear:both;"></div></a>';
+					  return '<a href="#" class=""><div style="width: auto; height: auto;"><b>Okręg wyborczy nr  ' +  vip + '</b><br>'+tip+'</div></a>';
+			},
 			moveToLocation: function(latlng, title, map) {
 				console.log("search");
 				map.fitBounds( latlng.layer.getBounds() , {paddingBottomRight: [400, 0], paddingTopLeft: [80, 0], animate: true, duration: 0.4});
@@ -1176,6 +1186,8 @@
 			//map.getPane('labels').style.display = 'inline-block';
 			if(e.layer._popup)
 				e.layer.openPopup();
+			searchControl._input.value = '';
+			searchControl._input.size = searchControl._inputMinSize;
 			//https://bdot10k.geoportal.gov.pl/#showLayersList&1618582473368
 		}).on('search:collapsed', function(e) {
 
@@ -1183,7 +1195,26 @@
 				layer_Okregi_0.resetStyle(layer);
 			});	
 		});
-		map.addControl( searchControl ); */
+		map.addControl( searchControl );
+		
+		function searchLayer(l_layer){
+			var kand_text = [];
+			searchControl._layer = l_layer;
+			l_layer.eachLayer(function (layer) {
+				for (i=1;i<24;i++){
+					kand_text.push('<div style = "width: auto; float: left;">' + layer.feature.properties["PnP_M"+i] + '</div><div style = "float: left;"><img src="images/'+layer.feature.properties['Mandaty_kol_P' + i]+'.jpg" alt ="I'+i+'"  class="Logo5"></div><div style = "clear: both;"></div>');
+					if (i==layer.feature.properties['Palade_29.']){
+						kand_text.push('<div style = "width: auto;"><hr/></div>');
+					}
+				}
+				kand_text.push('<div style = "width: auto; float: left;">' + layer.feature.properties["PnP_M24"] + '</div><div style = "float: left;"><img src="images/'+layer.feature.properties['Mandaty_kol_P24']+'.jpg" alt ="I24"  class="Logo5"></div><div style = "clear: both;"></div>');
+				
+				layer.feature.properties.Kandydaci = kand_text.join("");
+				kand_text = [];
+			});
+		}
+		searchLayer(layer_Okregi_0);
+		
 		map.on('popupopen', function(e) {
 			/*console.log("Przed: "+sc);
 			sc = sc_temp;
@@ -1241,14 +1272,19 @@
 				$('.leaflet-bottom:eq( 0 )').html('<img class="leaflet-control" src="./images/1.png" style="width: 200px; opacity: 0.9; margin-bottom: -32px;">');
 				/*this.removeControl(populationChangeLegend);
 				populationLegend.addTo(this);*/
+				searchLayer(layer_Okregi_0);
 			} else if (eventLayer.name === '<img src="legend/KO.PNG" alt="KO"   class="Logo"/> KOALICYJNY KOMITET WYBORCZY KOALICJA OBYWATELSKA PO .N IPL ZIELONI') {
 				$('.leaflet-bottom:eq( 0 )').html('<img class="leaflet-control" src="./images/2.png" style="width: 200px; opacity: 0.9; margin-bottom: 0px;">');
+				searchLayer(layer_Okregi_KO);
 			} else if (eventLayer.name === '<img src="legend/Lewica.jpg" alt="Lewica"   class="Logo"/> KOMITET WYBORCZY SOJUSZ LEWICY DEMOKRATYCZNEJ') {
 				$('.leaflet-bottom:eq( 0 )').html('<img class="leaflet-control" src="./images/3.png" style="width: 200px; opacity: 0.9; margin-bottom: 12px;">');
+				searchLayer(layer_Okregi_Lewica);
 			} else if (eventLayer.name === '<img src="legend/PSL.png" alt="PSL"   class="Logo"/> KOMITET WYBORCZY POLSKIE STRONNICTWO LUDOWE') {
 				$('.leaflet-bottom:eq( 0 )').html('<img class="leaflet-control" src="./images/4.png" style="width: 200px; opacity: 0.9; margin-bottom: -60px;">');
+				searchLayer(layer_Okregi_PSL);
 			} else{ // Or switch to the Population Change legend...
 				$('.leaflet-bottom:eq( 0 )').html('<img class="leaflet-control" src="./images/5.png" style="width: 200px; opacity: 0.9; margin-bottom: 4px;">');
+				searchLayer(layer_Okregi_Konfederacja);
 				/*this.removeControl(populationLegend);
 				populationChangeLegend.addTo(this);*/
 			}
