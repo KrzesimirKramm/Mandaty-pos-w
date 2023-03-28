@@ -49,6 +49,8 @@
 		var sc, sc_temp;
 		
 		var bounds_group = new L.featureGroup([]);
+		var layers = [];
+		var current_KOD = 21;
 		
         /*function setBounds() {
         }*/
@@ -1023,6 +1025,7 @@
 			for (i=0; i<24; i++){
 				p.index.push(p['PnP_M'+Number(i+1)]);
 			}
+			layers[p.jpt_kod_je] = layer;
         });
 		console.log(layer_Okregi_0);
 			/*'<img src="legend/KO.png" alt="KO"   class="Logo"/> KOALICYJNY KOMITET WYBORCZY KOALICJA OBYWATELSKA PO .N IPL ZIELONI': layer_Okregi_KO,
@@ -1165,12 +1168,11 @@
 					  var p = val.layer.feature.properties;
 					  var tip = p.Kandydaci;
 					  var vip = p.jpt_kod_je;
-					  //return '<a href="#" class=""><div style="float:left; width: 176px;"><span style=" font-size: 12px;">'+ tip +'</span>, <span style=" font-size: 11px;"><i>' +(vip.substring(6,7)!=="1"?'gmina':'miasto')+ '</i></span></div><div style="float:left; font-size: 9px; padding-left: 4px;">' + json_Powiaty_Simplified_1.getFeaturesByProperty('JPT_KOD_JE', val.layer.feature.properties['JPT_KOD_JE'].substring(0,4))[0].properties.JPT_NAZWA_+'<br>Okręg wyborczy nr  ' +  json_Okr.getFeaturesByProperty('Okr', val.layer.feature.properties['Okr'])[0].properties.Okr + '</div><div style="clear:both;"></div></a>';
 					  return '<a href="#" class=""><div style="width: auto; height: auto;"><b>Okręg wyborczy nr  ' +  vip + '</b><br>'+tip+'</div></a>';
 			},
 			moveToLocation: function(latlng, title, map) {
 				console.log("search");
-				map.fitBounds( latlng.layer.getBounds() , {paddingBottomRight: [400, 0], paddingTopLeft: [80, 0], animate: true, duration: 0.4});
+				map.fitBounds( latlng.layer.getBounds() , {paddingBottomRight: [40, 0], paddingTopLeft: [40, 0], animate: true, duration: 0.4});
 				var zoom = map.getBoundsZoom(latlng.layer.getBounds());
 				map.setView(latlng, zoom); // access the zoom
 			}
@@ -1184,8 +1186,10 @@
 			e.layer.setStyle({color: 'rgba(255,255,255,0.5)', weight: '8', lineCap: 'round', lineJoin: 'round',fillColor: 'rgba(255,0,0,0.9)',});
 			//e.layer.bringToFront();
 			//map.getPane('labels').style.display = 'inline-block';
-			if(e.layer._popup)
+			//if(e.layer._popup) e.layer.openPopup();
+			setTimeout(function () {
 				e.layer.openPopup();
+			},0);
 			searchControl._input.value = '';
 			searchControl._input.size = searchControl._inputMinSize;
 			//https://bdot10k.geoportal.gov.pl/#showLayersList&1618582473368
@@ -1202,7 +1206,7 @@
 			searchControl._layer = l_layer;
 			l_layer.eachLayer(function (layer) {
 				for (i=1;i<24;i++){
-					kand_text.push('<div style = "width: auto; float: left;">' + layer.feature.properties["PnP_M"+i] + '</div><div style = "float: left;"><img src="images/'+layer.feature.properties['Mandaty_kol_P' + i]+'.jpg" alt ="I'+i+'"  class="Logo5"></div><div style = "clear: both;"></div>');
+					kand_text.push('<div style = "width: auto; float: left;">' + layer.feature.properties["PnP_M"+i] + '&#8199;</div><div style = "float: left;"><img src="images/'+layer.feature.properties['Mandaty_kol_P' + i]+'.jpg" alt ="I'+i+'"  class="Logo5"></div><div style = "clear: both;"></div>');
 					if (i==layer.feature.properties['Palade_29.']){
 						kand_text.push('<div style = "width: auto;"><hr/></div>');
 					}
@@ -1211,6 +1215,7 @@
 				
 				layer.feature.properties.Kandydaci = kand_text.join("");
 				kand_text = [];
+				layers[layer.feature.properties.jpt_kod_je] = layer;
 			});
 		}
 		searchLayer(layer_Okregi_0);
@@ -1219,6 +1224,7 @@
 			/*console.log("Przed: "+sc);
 			sc = sc_temp;
 			console.log("Po: "+sc);*/
+			current_KOD = e.popup._source.feature.properties.jpt_kod_je;
 			setTimeout(function () {
 				if (document.readyState !== 'loading') {
 					console.log('document is already ready, just execute code here');
@@ -1259,14 +1265,28 @@
 				}
 				sc_temp = sc;
 			}
-			//Doesn't work
-			//e.preventDefault();
+			if (layers[current_KOD].isPopupOpen()){
+				setTimeout(function () {
+				
+					var px = map.project(e.target._popup._latlng); // find the pixel location on the map where the popup anchor is
+					px.y -= e.target._popup._container.clientHeight/2+16; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+					px.x += 192;
+					
+					//setTimeout(function () {
+						map.panTo(map.unproject(px),{animate: true, duration: 0.8}); // pan to new center
+					//}, 1000);
+					
+				}, 1000);
+			}
 		});
 		
 		map.on('popupclose', function(e) {
 		});
 		map.on('baselayerchange', function (eventLayer) {
+			layers = [];
 			console.log(eventLayer.name);
+			searchControl._hideTooltip();
+			searchControl.cancel();
 			// Switch to the Population legend...
 			if (eventLayer.name === '<img src="legend/PiS.png" alt ="PiS"  class="Logo"/> KOMITET WYBORCZY PRAWO I SPRAWIEDLIWOŚĆ') {
 				$('.leaflet-bottom:eq( 0 )').html('<img class="leaflet-control" src="./images/1.png" style="width: 200px; opacity: 0.9; margin-bottom: -32px;">');

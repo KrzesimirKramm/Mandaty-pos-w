@@ -1357,3 +1357,5 @@ a {
   border-style: solid;
   border-color: black transparent transparent transparent;
 }
+
+/*.leaflet-popup {top: 55px !important;}*/
