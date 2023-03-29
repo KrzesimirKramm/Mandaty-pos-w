@@ -34,7 +34,7 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
-        <script src="data/Okregi_6.js"></script>
+        <script src="data/Okregi_7.js"></script>
 		<script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
 		<script src="js/leaflet.geometryutil.js"></script>
 		<!--script src="https://d3js.org/d3-color.v2.min.js"></script-->
@@ -1181,7 +1181,7 @@
 		
 			
 			
-			
+			current_KOD = e.layer.feature.properties.jpt_kod_je;
 			//map.removeLayer(this._markerSearch)
 			e.layer.setStyle({color: 'rgba(255,255,255,0.5)', weight: '8', lineCap: 'round', lineJoin: 'round',fillColor: 'rgba(255,0,0,0.9)',});
 			//e.layer.bringToFront();
@@ -1189,7 +1189,7 @@
 			//if(e.layer._popup) e.layer.openPopup();
 			setTimeout(function () {
 				e.layer.openPopup();
-			},0);
+			},800);
 			searchControl._input.value = '';
 			searchControl._input.size = searchControl._inputMinSize;
 			//https://bdot10k.geoportal.gov.pl/#showLayersList&1618582473368
@@ -1217,6 +1217,12 @@
 				kand_text = [];
 				layers[layer.feature.properties.jpt_kod_je] = layer;
 			});
+			searchControl.on('search:collapsed', function(e) {
+
+			l_layer.eachLayer(function(layer) {	//restore feature color
+				l_layer.resetStyle(layer);
+			});	
+		});
 		}
 		searchLayer(layer_Okregi_0);
 		
@@ -1272,11 +1278,11 @@
 					px.y -= e.target._popup._container.clientHeight/2+16; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
 					px.x += 192;
 					
-					//setTimeout(function () {
+					setTimeout(function () {
 						map.panTo(map.unproject(px),{animate: true, duration: 0.8}); // pan to new center
-					//}, 1000);
+					}, 400);
 					
-				}, 1000);
+				}, 400);
 			}
 		});
 		
