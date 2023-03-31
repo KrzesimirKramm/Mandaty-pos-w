@@ -602,6 +602,7 @@
       // TODO implements autype without selection(useful for mobile device)
 
       const start = this._input.value.length
+	  console.log(this._input.value)
       const firstRecord = this._tooltip.firstChild ? this._tooltip.firstChild._text : ''
       const end = firstRecord.length
 
@@ -635,6 +636,7 @@
         sel.moveStart('character', end)
         sel.moveEnd('character', end)
         sel.select()
+		console.log(sel)
       } else {
         if (this._input.getSelection) {
           this._input.getSelection().removeAllRanges()
@@ -721,9 +723,21 @@
         this._recordsCache = this._recordsFromLayer()
 
         records = this._filterData(this._input.value, this._recordsCache)
-
-        this.showTooltip(records)
-
+		this.showTooltip(records)
+		//https://tomekdev.com/posts/highlight-text-in-javascript
+		const $box = document.getElementsByClassName('sCandidate')
+		const regex = new RegExp(this._input.value, 'gi')
+        
+		//console.log(records.value)
+		var ptext = [];
+		for (let i=0; i<$box.length; i++){
+			ptext[i] = $box[i].innerHTML
+			ptext[i] = ptext[i].replace(/(<mark class="highlight">|<\/mark>)/gim, '')
+			const newText = ptext[i].replace(regex, '<mark class="highlight">$&</mark>')
+			$box[i].innerHTML = newText
+		}
+		//console.log($box[1])
+		
         L.DomUtil.removeClass(this._container, 'search-load')
       } else {
         if (this.options.sourceData) { this._retrieveData = this.options.sourceData } else if (this.options.url) { // jsonp or ajax
@@ -794,7 +808,6 @@
 
       this.hideAlert()
       this._hideTooltip()
-
       if (this._input.style.display === 'none') { // on first click show _input only
         this.expand()
       } else {

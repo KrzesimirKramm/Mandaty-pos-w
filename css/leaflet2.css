@@ -1359,3 +1359,7 @@ a {
 }
 
 /*.leaflet-popup {top: 55px !important;}*/
+
+.highlight {
+  background-color: #EEF43B;
+}

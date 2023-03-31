@@ -1167,7 +1167,7 @@
 					  var p = val.layer.feature.properties;
 					  var tip = p.Kandydaci;
 					  var vip = p.jpt_kod_je;
-					  return '<a href="#" class=""><div style="width: auto; height: auto;"><b>Okręg wyborczy nr  ' +  vip + '</b><br>'+tip+'</div></a>';
+					  return '<a href="#" class=""><div style="width: auto; height: auto;"><b>Okręg wyborczy nr  ' +  vip + '</b><br>Kolejność obsadzania mandatów:<br>'+tip+'</div></a>';
 			},
 			moveToLocation: function(latlng, title, map) {
 				console.log("search");
@@ -1205,12 +1205,12 @@
 			searchControl._layer = l_layer;
 			l_layer.eachLayer(function (layer) {
 				for (i=1;i<24;i++){
-					kand_text.push('<div style = "width: auto; float: left;">' + layer.feature.properties["PnP_M"+i] + '&#8199;</div><div style = "float: left;"><img src="images/'+layer.feature.properties['Mandaty_kol_P' + i]+'.jpg" alt ="I'+i+'"  class="Logo5"></div><div style = "clear: both;"></div>');
+					kand_text.push('<div class = "sCandidate" style = "width: auto; float: left;">' + i + '.&#8199;' + layer.feature.properties["PnP_M"+i] + '&#8199;</div><div style = "float: left;"><img src="images/'+layer.feature.properties['Mandaty_kol_P' + i]+'.jpg" alt ="I'+i+'"  class="Logo5"></div><div style = "clear: both;"></div>');
 					if (i==layer.feature.properties['Palade_29.']){
-						kand_text.push('<div style = "width: auto;"><hr/></div>');
+						kand_text.push('<div style = "width: auto;"><hr style="height: 1px; background-color: #ccc; border: none;"/></div>');
 					}
 				}
-				kand_text.push('<div style = "width: auto; float: left;">' + layer.feature.properties["PnP_M24"] + '</div><div style = "float: left;"><img src="images/'+layer.feature.properties['Mandaty_kol_P24']+'.jpg" alt ="I24"  class="Logo5"></div><div style = "clear: both;"></div>');
+				kand_text.push('<div style = "width: auto; float: left;">' + '24.&#8199;' + layer.feature.properties["PnP_M24"] + '</div><div style = "float: left;"><img src="images/'+layer.feature.properties['Mandaty_kol_P24']+'.jpg" alt ="I24"  class="Logo5"></div><div style = "clear: both;"></div>');
 				
 				layer.feature.properties.Kandydaci = kand_text.join("");
 				kand_text = [];
